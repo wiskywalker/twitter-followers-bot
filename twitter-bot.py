@@ -47,6 +47,8 @@ def follow_list(api, userlist):
 
 
 def unfollow_funct(api):
+    # the ID of the list to add the non followers
+    list_id = 1365015459507109888
     # Get info about followers/followings and whitelist
     followers = api.followers_ids()
     followings = api.friends_ids()
@@ -55,8 +57,10 @@ def unfollow_funct(api):
     for i in followings:
         screen_name = api.get_user(i).screen_name
         if i not in followers and screen_name not in whitelist:
-            print ("Unfollowing %s" % screen_name)
+            api.add_list_member(list_id=list_id, screen_name=screen_name)
+            print ("Added %s to list %d" % (str(screen_name), int(list_id)))
             api.destroy_friendship(screen_name)
+            print ("Unfollowing %s" % screen_name)
 
 		
 def unfollow_list(api, userlist):
