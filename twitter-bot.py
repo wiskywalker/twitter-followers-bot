@@ -46,9 +46,7 @@ def follow_list(api, userlist):
             time.sleep(delay_follow)
 
 
-def unfollow_funct(api):
-    # the ID of the list to add the non followers
-    list_id = 1365015459507109888
+def unfollow_funct(api, listid):
     # Get info about followers/followings and whitelist
     followers = api.followers_ids()
     followings = api.friends_ids()
@@ -57,11 +55,16 @@ def unfollow_funct(api):
     for i in followings:
         screen_name = api.get_user(i).screen_name
         if i not in followers and screen_name not in whitelist:
-            api.add_list_member(list_id=list_id, screen_name=screen_name)
-            print ("Added %s to list %d" % (str(screen_name), int(list_id)))
-            api.destroy_friendship(screen_name)
-            print ("Unfollowing %s" % screen_name)
-
+            print("Trying for: " + screen_name)
+            try:
+                api.add_list_member(list_id=listid, screen_name=screen_name)
+                print ("Added %s to list %d" % (str(screen_name), int(listid)))
+                api.destroy_friendship(screen_name)
+                print ("Unfollowing %s" % screen_name)
+            except ValueError:
+                print(tweepy.error.TweepError)
+                print("Failed for user: " + screen_name)
+        
 		
 def unfollow_list(api, userlist):
     userlist = open(userlist).read().splitlines()
@@ -176,7 +179,8 @@ def main():
             follow_list(api, input_)
                 
     elif option == "unfollow-back":
-        unfollow_funct(api)
+        input_ = args.input
+        unfollow_funct(api, input_)
     elif option == "unfollow":
         input_ = args.input
         unfollow_list(api, input_)

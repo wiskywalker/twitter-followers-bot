@@ -61,10 +61,10 @@ Unfollow users in example.lst:
 
 ![Screenshot](https://i.imgur.com/0qDpQYG.png)
 
-Unfollow people who i follow but they do not follow me back:
+Unfollow people who i follow but they do not follow me back add them to a list:
 
 ```
-python3 twitter-bot.py -o unfollow-back
+python3 twitter-bot.py -o unfollow-back -i list-id
 ```
 ![Screenshot](https://i.imgur.com/QBhrXoe.png)
 
